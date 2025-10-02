@@ -62,10 +62,15 @@ void HudRenderer::drawSetSpeed(QPainter &p, const QRect &surface_rect) {
   QSize set_speed_size = is_metric ? QSize(200, 204) : default_size;
   QRect set_speed_rect(QPoint(60 + (default_size.width() - set_speed_size.width()) / 2, 45), set_speed_size);
 
+  QRect currentSpeed(QPoint(60 + (default_size.width() - set_speed_size.width()) / 2, 250), set_speed_size);
+
   // Draw set speed box
   p.setPen(QPen(QColor(255, 255, 255, 75), 6));
   p.setBrush(QColor(0, 0, 0, 166));
   p.drawRoundedRect(set_speed_rect, 32, 32);
+
+  //Current speed box
+  p.drawRoundedRect(currentSpeed, 32, 32);
 
   // Colors based on status
   QColor max_color = QColor(0xa6, 0xa6, 0xa6, 0xff);
@@ -96,17 +101,20 @@ void HudRenderer::drawSetSpeed(QPainter &p, const QRect &surface_rect) {
 void HudRenderer::drawCurrentSpeed(QPainter &p, const QRect &surface_rect) {
   QString speedStr = QString::number(std::nearbyint(speed));
 
-  p.setFont(InterFont(176, QFont::Bold));
-  drawText(p, surface_rect.center().x(), 210, speedStr);
-
+  p.setFont(InterFont(80, QFont::Bold));
+  //drawText(p, surface_rect.center().x(), 210, speedStr);
+  drawText(p, 140, 350, speedStr);
   p.setFont(InterFont(66));
-  drawText(p, surface_rect.center().x(), 290, is_metric ? tr("km/h") : tr("mph"), 200);
+  //drawText(p, surface_rect.center().x(), 290, is_metric ? tr("km/h") : tr("mph"), 200);
+  drawText(p, 140, 420, is_metric ? tr("km/h") : tr("mph"), 200);
+
+
 }
 
 void HudRenderer::drawText(QPainter &p, int x, int y, const QString &text, int alpha) {
   QRect real_rect = p.fontMetrics().boundingRect(text);
   real_rect.moveCenter({x, y - real_rect.height() / 2});
 
-  p.setPen(QColor(0x00, 0x52, 0xcc, alpha));
+  p.setPen(QColor(0xe1, 0xe1, 0xe1, alpha));
   p.drawText(real_rect.x(), real_rect.bottom(), text);
 }
